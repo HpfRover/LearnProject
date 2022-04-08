@@ -56,7 +56,7 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
         getItemCountInit()
 
         // 遍历结点 (计算 ViewGroup的最大宽度和最大高度)
-        travelMeasureChild(nodeHead.nextNodes, nodeHead)
+        travelMeasureChild(container,nodeHead.nextNodes, nodeHead)
 
         maxViewGroupWidth = Math.max(maxViewGroupWidth + container.paddingRight, container.paddingLeft + container.paddingRight)
         maxViewGroupHeight = Math.max(maxViewGroupHeight + container.paddingBottom, container.paddingTop + container.paddingBottom)
@@ -65,14 +65,14 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
     }
 
     // 计算子view的left和top位置
-    private fun travelMeasureChild(list: MutableList<CoverNode>, preNode: CoverNode) {
+    private fun travelMeasureChild(container: ViewGroup,list: MutableList<CoverNode>, preNode: CoverNode) {
         list.forEach { item ->
             val params = item.view?.layoutParams as? CoverViewLayout.LayoutParams ?: return
 
             // 1. 没有依赖的id的情况下，margin_left和margin_top生效，且基准都是viewGroup
             if (item.coverRelativeId == 0) {
-                item.lLeft = params.leftMargin + preNode.lLeft
-                item.lTop = params.topMargin + preNode.lTop
+                item.lLeft = params.leftMargin + container.paddingLeft
+                item.lTop = params.topMargin + container.paddingTop
             }
 
             /**
@@ -104,12 +104,11 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
                         params.bottomMargin > 0 -> {
                             centerTop -= params.topMargin
                         }
-                        else -> {
-                            item.lTop = centerTop    // fixme : 误差
-                        }
                     }
+                    item.lTop = centerTop
                 } else {                             // 以viewGroup为基准的布局
-                    item.lTop = params.topMargin + preNode.lTop
+                    item.lTop = params.topMargin + container.paddingTop
+                    Log.d("TravelLayout : ", "item ==  : $item")
                 }
             }
 
@@ -124,7 +123,7 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
                 maxViewGroupHeight = itemHeight
             }
 
-            travelMeasureChild(item.nextNodes, item)
+            travelMeasureChild(container,item.nextNodes, item)
         }
 
 
@@ -141,7 +140,7 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
     private var count = 0
 
     private fun getItemCountInit() {
-        Log.d("TravelLayout : ", "getItemCountInit")
+        // Log.d("TravelLayout : ", "getItemCountInit")
         count = 0
         getItemCount()
     }
@@ -149,7 +148,7 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
     // todo : 测试 : 获取元素个数
     private fun getItemCount(list: List<CoverNode> = nodeHead.nextNodes, isLast: Boolean = false) {
         list.forEachIndexed { index, node ->
-            Log.d("TravelLayout : ", "item ==  : $node")
+            // Log.d("TravelLayout : ", "item ==  : $node")
             if (index == list.size - 1) {
                 getItemCount(node.nextNodes, true)
             } else {
@@ -160,7 +159,7 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
         count += list.size
 
         if (list.isNullOrEmpty() && isLast) {
-            Log.d("TravelLayout : ", "all item count ====>>>: $count")
+            // Log.d("TravelLayout : ", "all item count ====>>>: $count")
         }
     }
 
