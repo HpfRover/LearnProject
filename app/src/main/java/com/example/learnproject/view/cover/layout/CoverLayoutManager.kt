@@ -39,8 +39,8 @@ abstract class CoverLayoutManager {
             getCoverNodesLinkList(container)
 
 
-            // todo : 2. 根据整理的结点关系，进行整体测量，确定 ViewGroup 的宽高
-            val measureAllPair = measureCoverTotal(container,widthMeasureSpec,heightMeasureSpec)
+            // 2. 根据整理的结点关系，进行整体测量，确定 ViewGroup 的宽高
+            val measureAllPair = measureCoverTotal(container, widthMeasureSpec, heightMeasureSpec)
 
             if (View.MeasureSpec.getMode(widthMeasureSpec) == View.MeasureSpec.AT_MOST) {
                 width = measureAllPair.first
@@ -51,9 +51,27 @@ abstract class CoverLayoutManager {
             }
         }
 
-
         return Pair(width, height)
     }
+
+
+    /**
+     * 绘制
+     * 1. 先不考虑viewGroup的margin
+     * 2. 不考虑层级关系
+     * 3. 使用链表结构进行布局
+     */
+    fun onLayoutCoverLayout(container: ViewGroup) {
+        travelLayoutChild(nodeHead.nextNodes)
+    }
+
+    private fun travelLayoutChild(list: MutableList<CoverNode>) {
+        list.forEach { itemNode ->
+            itemNode.view?.layout(itemNode.lLeft, itemNode.lTop, itemNode.lRight, itemNode.lBottom)
+            travelLayoutChild(itemNode.nextNodes)
+        }
+    }
+
 
     // 获取所有结点的关系，形成链表 (尝试能够定位到所有子view的位置)
     private fun getCoverNodesLinkList(container: ViewGroup) {
@@ -90,20 +108,17 @@ abstract class CoverLayoutManager {
     private fun recursionLinkRelation(lists: MutableList<CoverNode>, preCoverNode: CoverNode) {
         for (child in lists) {
             // 判断 view 的依赖id是否与上一个view的id相同，相同即存在依赖关系
-            if(child.coverRelativeId == preCoverNode.view?.id?:0) {
+            if (child.coverRelativeId == preCoverNode.view?.id ?: 0) {
                 // 加入依赖 view 的集合 ，并删除当前元素，继续以当前view，查找
                 preCoverNode.nextNodes.add(child)
                 child.preNode = preCoverNode
                 // 从集合中删除元素 child
                 // todo : fix (后续迭代过程中删除元素，优化速度) lists.remove(child)
                 // 继续以 child 作为父结点，查找依赖 child 的后续结点
-                recursionLinkRelation(lists,child)
+                recursionLinkRelation(lists, child)
             }
         }
     }
 
-
-    abstract fun measureCoverWidth(container: ViewGroup): Int
-    abstract fun measureCoverHeight(container: ViewGroup): Int
-    abstract fun measureCoverTotal(container: ViewGroup, widthMeasureSpec: Int, heightMeasureSpec: Int) : Pair<Int,Int>
+    abstract fun measureCoverTotal(container: ViewGroup, widthMeasureSpec: Int, heightMeasureSpec: Int): Pair<Int, Int>
 }

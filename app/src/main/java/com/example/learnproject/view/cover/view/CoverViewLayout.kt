@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Log
 import android.view.ViewGroup
+import androidx.core.view.forEach
 import com.example.learnproject.R
 import com.example.learnproject.view.cover.CoverLayer
 import com.example.learnproject.view.cover.layout.*
@@ -19,6 +20,9 @@ import com.example.learnproject.view.cover.layout.*
 @SuppressLint("Recycle")
 class CoverViewLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : ViewGroup(context, attrs, defStyleAttr) {
     private var orientation: Int = CoverLayoutManager.START_LEFT
+    private val manager : CoverLayoutManager by lazy(LazyThreadSafetyMode.NONE) {
+        getLayoutManager()
+    }
 
     init {
         // fixme : 系统的获取调用的是传入四个参数的方法
@@ -28,9 +32,7 @@ class CoverViewLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val manager = getLayoutManager()
         val pair = manager.measureCoverLayout(this, widthMeasureSpec, heightMeasureSpec)
-
         setMeasuredDimension(pair.first, pair.second)
     }
 
@@ -48,6 +50,7 @@ class CoverViewLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
+        manager.onLayoutCoverLayout(this)
     }
 
 

@@ -15,15 +15,6 @@ import org.apache.http.params.CoreConnectionPNames
  * </pre>
  */
 class CoverStartLeftLayoutManager : CoverLayoutManager() {
-    override fun measureCoverWidth(container: ViewGroup): Int {
-
-        return 0
-    }
-
-    override fun measureCoverHeight(container: ViewGroup): Int {
-        return 0
-    }
-
     /**
      * 测量容器 (这里简单处理，测试子view的时候，不考虑margin)
      * 1. 首先需要对子 view 进行测量，这里需要注意，以 start_left 布局举例，所有结点不考虑 margin_right
@@ -34,7 +25,7 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
      */
     private var maxViewGroupHeight = 0      // 记录 viewGroup 的最大高度
     private var maxViewGroupWidth = 0       // 记录 ViewGroup 的最大宽度
-    override fun measureCoverTotal(container: ViewGroup, widthMeasureSpec: Int, heightMeasureSpec: Int): Pair<Int,Int> {
+    override fun measureCoverTotal(container: ViewGroup, widthMeasureSpec: Int, heightMeasureSpec: Int): Pair<Int, Int> {
         // 1. 测量所有的子view(这里未考虑子view的margin)
         container.forEach { child ->
             val childWidthMeasureSpec = ViewGroup.getChildMeasureSpec(widthMeasureSpec, container.paddingLeft + container.paddingRight, child.layoutParams.width)
@@ -64,16 +55,16 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
         maxViewGroupHeight = container.paddingTop + container.paddingBottom
 
         // 遍历结点 (计算 ViewGroup的最大宽度和最大高度)
-        transverseList(nodeHead.nextNodes, nodeHead)
+        travelMeasureChild(nodeHead.nextNodes, nodeHead)
 
-        maxViewGroupWidth = Math.max(maxViewGroupWidth + container.paddingRight , container.paddingLeft + container.paddingRight)
-        maxViewGroupHeight = Math.max(maxViewGroupHeight + container.paddingBottom , container.paddingTop + container.paddingBottom)
+        maxViewGroupWidth = Math.max(maxViewGroupWidth + container.paddingRight, container.paddingLeft + container.paddingRight)
+        maxViewGroupHeight = Math.max(maxViewGroupHeight + container.paddingBottom, container.paddingTop + container.paddingBottom)
 
-        return Pair(maxViewGroupWidth,maxViewGroupHeight)
+        return Pair(maxViewGroupWidth, maxViewGroupHeight)
     }
 
     // 计算子view的left和top位置
-    private fun transverseList(list: MutableList<CoverNode>, preNode: CoverNode) {
+    private fun travelMeasureChild(list: MutableList<CoverNode>, preNode: CoverNode) {
         list.forEach { item ->
             val params = item.view?.layoutParams as? CoverViewLayout.CoverLayoutParams ?: return
 
@@ -119,23 +110,27 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
                 } else {                             // 以viewGroup为基准的布局
                     item.lTop = params.topMargin + preNode.lTop
                 }
+
+                // 计算right和bottom
+                item.lRight = item.lLeft + (item.view?.measuredWidth ?: 0)
+                item.lBottom = item.lTop + (item.view?.measuredHeight ?: 0)
             }
 
             // 计算 viewGroup 的最大高度
-            val itemHeight = item.lTop + (item.view?.measuredHeight?:0)     // 此处是没有考虑 viewGroup 的 paddingBottom 的
+            val itemHeight = item.lTop + (item.view?.measuredHeight ?: 0)     // 此处是没有考虑 viewGroup 的 paddingBottom 的
 
-            if(itemHeight > maxViewGroupHeight) {
+            if (itemHeight > maxViewGroupHeight) {
                 maxViewGroupHeight = itemHeight
             }
 
-            transverseList(item.nextNodes, item)
+            travelMeasureChild(item.nextNodes, item)
         }
 
 
         // 计算 viewGroup 的最大宽度
-        if(list.isNullOrEmpty()) {
-            val itemWidth = preNode.lLeft + (preNode.view?.measuredWidth?:0)
-            if(itemWidth > maxViewGroupWidth) {
+        if (list.isNullOrEmpty()) {
+            val itemWidth = preNode.lLeft + (preNode.view?.measuredWidth ?: 0)
+            if (itemWidth > maxViewGroupWidth) {
                 maxViewGroupWidth = itemWidth
             }
         }
