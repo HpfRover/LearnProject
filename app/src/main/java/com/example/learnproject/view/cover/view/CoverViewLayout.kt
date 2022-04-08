@@ -38,9 +38,6 @@ class CoverViewLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         setMeasuredDimension(pair.first, pair.second)
     }
 
-    // fixme : 重写 generateLayoutParams
-
-
     private fun getLayoutManager(): CoverLayoutManager {
         return when (orientation) {
             CoverLayoutManager.START_LEFT -> CoverStartLeftLayoutManager()
