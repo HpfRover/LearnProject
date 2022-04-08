@@ -1,0 +1,54 @@
+## 2. 自定义属性说明
+
+### 2.1 ViewGroup 自定义属性
+
+> 支持系统的 padding 属性
+
+> cover_orientation : 默认 start_left
+1. start_left : 从 ViewGroup 左边开始布局,即从左到右 (默认)
+2. start_right
+3. start_top
+4. start_bottom
+
+
+### 2.2 View 可用属性说明 , CoverLayoutParams
+> 支持系统 margin 属性
+
+> cover_relative : 依赖的 id
+1. 如果依赖的 id 无效(不存在或为null),以 ViewGroup 为准
+
+> cover_cross : 与依赖的 view 的交叉范围
+1. cover_relative 生效时有效
+2. 取值范围 >= 0
+3. 不设置或者-1代表此属性无效
+
+> cover_layer : 与依赖的 view 的层次关系
+1. cover_relative 生效时有效
+2. 取值 top(在依赖的 view 下方) , bottom
+3. 默认 top
+
+> cover_margin_relative : 以依赖的 view 作为 margin 基准
+1. cover_relative 生效时有效
+2. 默认值为true，若 cover_relative 无效或值为false，则以 ViewGroup 作为 margin 基准
+3. 特殊情况说明
+    * 如果布局方向为 start_left,若 cover_relative 有效，margin_left 都是以依赖的 View 为基准 , 不考虑 cover_margin_relative 值为 true 或 false，
+        * 此时如果设置了 cover_cross,则不考虑 margin_left,只有在其无效状态下才考虑 【无效 : cover_cross = -1】
+    * 如果布局方向为 start_left,若 cover_relative 无效，margin_left 都是以 ViewGroup 为基准 , 不考虑 cover_margin_relative 值为 true 或 false，
+    * 如果布局方向为 start_left, margin_top 在 【cover_relative 有效且 cover_margin_relative 为true】 的情况下，以依赖的 View 为基准，否则，以 ViewGroup 为基准
+        * cover_relative 有效且 cover_margin_relative 为true : 此种情况下，需要考虑 margin_bottom
+    * start_left 情况下，不考虑 margin_bottom 情况
+
+===================================================================
+
+## 1. LayoutManager 说明
+
+> 公共部分
+1. 所有的 View 构成一个链表结构,此处的链表关系为共同部分
+
+
+> 不同部分
+1. 当进行测量时,不同的布局方向,View 的摆放位置，层级关系，影响了测量时确定的宽高
+2. 布局同上
+
+
+### 1.1 CoverStartLeftLayoutManager : 从左向右开始布局

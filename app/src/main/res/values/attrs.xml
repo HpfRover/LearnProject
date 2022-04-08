@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--ViewGroup 属性-->
+    <declare-styleable name="CoverViewLayout">
+        <attr name="cover_orientation">
+            <enum name="start_left" value="0" />
+            <enum name="start_right" value="1" />
+            <enum name="start_top" value="2" />
+            <enum name="start_bottom" value="3" />
+        </attr>
+    </declare-styleable>
+
+    <!--View可用属性-->
+    <declare-styleable name="CoverViewLayout_Layout">
+        <attr name="layout_cover_relative" format="reference" />
+        <attr name="layout_cover_cross" format="dimension" />
+        <attr name="layout_cover_margin_relative" format="boolean" />
+        <attr name="layout_cover_layer">
+            <enum name="top" value="0" />
+            <enum name="bottom" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>
