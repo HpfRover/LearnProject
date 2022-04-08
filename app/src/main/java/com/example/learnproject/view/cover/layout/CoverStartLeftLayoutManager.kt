@@ -1,11 +1,9 @@
 package com.example.learnproject.view.cover.layout
 
-import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.forEach
 import com.example.learnproject.view.cover.CoverNode
 import com.example.learnproject.view.cover.view.CoverViewLayout
-import org.apache.http.params.CoreConnectionPNames
 
 /**
  * <pre>
@@ -66,7 +64,7 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
     // 计算子view的left和top位置
     private fun travelMeasureChild(list: MutableList<CoverNode>, preNode: CoverNode) {
         list.forEach { item ->
-            val params = item.view?.layoutParams as? CoverViewLayout.CoverLayoutParams ?: return
+            val params = item.view?.layoutParams as? CoverViewLayout.LayoutParams ?: return
 
             // 1. 没有依赖的id的情况下，margin_left和margin_top生效，且基准都是viewGroup
             if (item.coverRelativeId == 0) {

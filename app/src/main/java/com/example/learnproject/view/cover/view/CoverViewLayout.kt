@@ -3,12 +3,12 @@ package com.example.learnproject.view.cover.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.ViewGroup
-import androidx.core.view.forEach
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import com.example.learnproject.R
 import com.example.learnproject.view.cover.CoverLayer
-import com.example.learnproject.view.cover.layout.*
+import com.example.learnproject.view.cover.layout.CoverLayoutManager
+import com.example.learnproject.view.cover.layout.CoverStartLeftLayoutManager
 
 /**
  * <pre>
@@ -53,8 +53,25 @@ class CoverViewLayout @JvmOverloads constructor(context: Context, attrs: Attribu
         manager.onLayoutCoverLayout(this)
     }
 
+    override fun generateLayoutParams(attrs: AttributeSet): LayoutParams {
+        return LayoutParams(context,attrs)
+    }
 
-    class CoverLayoutParams : MarginLayoutParams {
+    override fun generateDefaultLayoutParams(): LayoutParams {
+        return LayoutParams(WRAP_CONTENT, WRAP_CONTENT)
+    }
+
+    override fun generateLayoutParams(p: ViewGroup.LayoutParams): ViewGroup.LayoutParams {
+        if(p is LayoutParams) {
+            return p
+        }else if(p is MarginLayoutParams) {
+            return p
+        }
+        return p
+    }
+
+
+    class LayoutParams : MarginLayoutParams {
         // 依赖 id
         var coverRelativeId = 0
         // 与依赖的 view 的交叉范围

@@ -80,7 +80,7 @@ abstract class CoverLayoutManager {
         container.forEach { child ->
 
             // fixme : 如果 params 不是 CoverLayoutParams 类型，是否做异常处理
-            val params = child.layoutParams as? CoverViewLayout.CoverLayoutParams
+            val params = child.layoutParams as? CoverViewLayout.LayoutParams
             params ?: return
 
             // 临时集合
