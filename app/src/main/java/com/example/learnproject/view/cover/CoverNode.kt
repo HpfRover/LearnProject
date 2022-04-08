@@ -31,7 +31,7 @@ class CoverNode {
     var nextNodes: MutableList<CoverNode> = mutableListOf()
 
     // 依赖的上一个结点
-    var preNode : CoverNode = CoverNode()
+    // var preNode : CoverNode? = null
 
 
     // 顶点 (布局和绘制的时候需要)

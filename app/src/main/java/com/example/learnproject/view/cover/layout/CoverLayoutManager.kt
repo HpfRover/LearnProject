@@ -111,7 +111,7 @@ abstract class CoverLayoutManager {
             if (child.coverRelativeId == preCoverNode.view?.id ?: 0) {
                 // 加入依赖 view 的集合 ，并删除当前元素，继续以当前view，查找
                 preCoverNode.nextNodes.add(child)
-                child.preNode = preCoverNode
+                // child.preNode = preCoverNode
                 // 从集合中删除元素 child
                 // todo : fix (后续迭代过程中删除元素，优化速度) lists.remove(child)
                 // 继续以 child 作为父结点，查找依赖 child 的后续结点
