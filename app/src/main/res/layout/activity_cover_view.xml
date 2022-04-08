@@ -5,36 +5,44 @@
     android:layout_height="match_parent">
 
     <com.example.learnproject.view.cover.view.CoverViewLayout
-        app:cover_orientation="start_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:cover_orientation="start_left"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <View
-            android:layout_marginLeft="100dp"
-            android:background="@drawable/shape_color_red"
             android:id="@+id/view1"
-            android:layout_width="100dp"
-            android:layout_height="100dp"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/shape_color_red" />
 
         <View
-            app:layout_cover_cross="50dp"
-            app:layout_cover_margin_relative="true"
-            app:layout_cover_relative="@id/view1"
-            android:background="@drawable/shape_color_green"
             android:id="@+id/view2"
-            android:layout_width="100dp"
-            android:layout_height="100dp"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/shape_color_green"
+            app:layout_cover_cross="25dp"
+            app:layout_cover_margin_relative="true"
+            app:layout_cover_relative="@id/view1" />
 
         <View
-            app:layout_cover_margin_relative="true"
-            app:layout_cover_relative="@id/view2"
-            android:layout_marginLeft="50dp"
-            android:background="@drawable/shape_color_blue"
             android:id="@+id/view3"
-            android:layout_width="100dp"
-            android:layout_height="100dp"/>
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/shape_color_blue"
+            app:layout_cover_margin_relative="true"
+            app:layout_cover_relative="@id/view2" />
+
+        <View
+            android:id="@+id/view4"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_cover_cross="25dp"
+            android:background="@drawable/shape_color_red"
+            app:layout_cover_margin_relative="true"
+            app:layout_cover_relative="@id/view3" />
 
     </com.example.learnproject.view.cover.view.CoverViewLayout>
 

@@ -1,5 +1,6 @@
 package com.example.learnproject.view.cover.layout
 
+import android.util.Log
 import android.view.ViewGroup
 import androidx.core.view.forEach
 import com.example.learnproject.view.cover.CoverNode
@@ -51,6 +52,8 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
         // 重置ViewGroup的宽高
         maxViewGroupWidth = container.paddingLeft + container.paddingRight
         maxViewGroupHeight = container.paddingTop + container.paddingBottom
+
+        getItemCountInit()
 
         // 遍历结点 (计算 ViewGroup的最大宽度和最大高度)
         travelMeasureChild(nodeHead.nextNodes, nodeHead)
@@ -108,11 +111,11 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
                 } else {                             // 以viewGroup为基准的布局
                     item.lTop = params.topMargin + preNode.lTop
                 }
-
-                // 计算right和bottom
-                item.lRight = item.lLeft + (item.view?.measuredWidth ?: 0)
-                item.lBottom = item.lTop + (item.view?.measuredHeight ?: 0)
             }
+
+            // 计算right和bottom
+            item.lRight = item.lLeft + (item.view?.measuredWidth ?: 0)
+            item.lBottom = item.lTop + (item.view?.measuredHeight ?: 0)
 
             // 计算 viewGroup 的最大高度
             val itemHeight = item.lTop + (item.view?.measuredHeight ?: 0)     // 此处是没有考虑 viewGroup 的 paddingBottom 的
@@ -133,6 +136,32 @@ class CoverStartLeftLayoutManager : CoverLayoutManager() {
             }
         }
 
+    }
+
+    private var count = 0
+
+    private fun getItemCountInit() {
+        Log.d("TravelLayout : ", "getItemCountInit")
+        count = 0
+        getItemCount()
+    }
+
+    // todo : 测试 : 获取元素个数
+    private fun getItemCount(list: List<CoverNode> = nodeHead.nextNodes, isLast: Boolean = false) {
+        list.forEachIndexed { index, node ->
+            Log.d("TravelLayout : ", "item ==  : $node")
+            if (index == list.size - 1) {
+                getItemCount(node.nextNodes, true)
+            } else {
+                getItemCount(node.nextNodes, false)
+            }
+        }
+
+        count += list.size
+
+        if (list.isNullOrEmpty() && isLast) {
+            Log.d("TravelLayout : ", "all item count ====>>>: $count")
+        }
     }
 
 }

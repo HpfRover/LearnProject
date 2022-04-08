@@ -1,5 +1,6 @@
 package com.example.learnproject.view.cover.layout
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.forEach
@@ -62,13 +63,14 @@ abstract class CoverLayoutManager {
      * 3. 使用链表结构进行布局
      */
     fun onLayoutCoverLayout(container: ViewGroup) {
-        travelLayoutChild(nodeHead.nextNodes)
+        travelLayoutChild(nodeHead.nextNodes,0)
     }
 
-    private fun travelLayoutChild(list: MutableList<CoverNode>) {
+    private fun travelLayoutChild(list: MutableList<CoverNode>,level : Int) {
         list.forEach { itemNode ->
+            // Log.d("TravelLayout : ","level : $level , size : ${list.size} , $itemNode")
             itemNode.view?.layout(itemNode.lLeft, itemNode.lTop, itemNode.lRight, itemNode.lBottom)
-            travelLayoutChild(itemNode.nextNodes)
+            travelLayoutChild(itemNode.nextNodes,level + 1)
         }
     }
 

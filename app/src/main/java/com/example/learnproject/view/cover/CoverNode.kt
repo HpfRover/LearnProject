@@ -42,6 +42,10 @@ class CoverNode {
     var lRight = 0
 
     var lBottom = 0
+
+    override fun toString(): String {
+        return "CoverNode(view=$view, coverRelativeId=$coverRelativeId, coverMarginRelative=$coverMarginRelative, coverCross=$coverCross, lLeft=$lLeft, lTop=$lTop , lRight=$lRight , lBottom=$lBottom)"
+    }
 }
 
 

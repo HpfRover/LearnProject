@@ -3,6 +3,7 @@ package com.example.learnproject.view.cover.view
 import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
 import com.example.learnproject.R
@@ -32,6 +33,7 @@ class CoverViewLayout @JvmOverloads constructor(context: Context, attrs: Attribu
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        Log.d("TravelLayout : ", "onMeasure")
         val pair = manager.measureCoverLayout(this, widthMeasureSpec, heightMeasureSpec)
         setMeasuredDimension(pair.first, pair.second)
     }
