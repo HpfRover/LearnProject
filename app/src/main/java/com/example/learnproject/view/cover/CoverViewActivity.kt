@@ -14,6 +14,6 @@ import com.example.learnproject.R
 class CoverViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_cover_view)
+        setContentView(R.layout.activity_cover_view_temp)
     }
 }
